@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StyleMate – Your Personal Fashion Assistant</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+  <!-- Google Fonts: Playfair Display & Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- App Container -->
+  <div class="app-layout">
+    
+    <!-- Sidebar Overlay for Mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <!-- Sidebar Header / Logo -->
+      <div class="sidebar-header">
+        <div class="brand">
+          <div class="brand-icon">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+          </div>
+          <div class="brand-text">
+            <h1 class="brand-name">StyleMate</h1>
+            <span class="brand-tagline">Your Personal Fashion Assistant</span>
+          </div>
+        </div>
+        <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Close sidebar">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- New Chat Button -->
+      <div class="sidebar-action">
+        <button class="btn-new-chat" id="newChatBtn">
+          <i class="fa-solid fa-plus"></i>
+          <span>New Styling Chat</span>
+        </button>
+      </div>
+
+      <!-- Quick Navigation -->
+      <div class="sidebar-section">
+        <div class="section-label">Quick Navigation</div>
+        <nav class="quick-nav" id="quickNav">
+          <button class="nav-item" data-action="outfit">
+            <span class="nav-icon"><i class="fa-solid fa-vest-patches"></i></span>
+            <span class="nav-text">Outfit Ideas</span>
+            <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+          </button>
+          <button class="nav-item" data-action="color">
+            <span class="nav-icon"><i class="fa-solid fa-palette"></i></span>
+            <span class="nav-text">Colour Matching</span>
+            <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+          </button>
+          <button class="nav-item" data-action="occasion">
+            <span class="nav-icon"><i class="fa-solid fa-champagne-glasses"></i></span>
+            <span class="nav-text">Occasion Styling</span>
+            <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+          </button>
+          <button class="nav-item" data-action="tips">
+            <span class="nav-icon"><i class="fa-solid fa-lightbulb"></i></span>
+            <span class="nav-text">Fashion Tips</span>
+            <span class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Recent Chats -->
+      <div class="sidebar-section recent-chats-section">
+        <div class="section-header-flex">
+          <div class="section-label">Recent Chats</div>
+          <span class="recent-count" id="recentCount">4</span>
+        </div>
+        <div class="recent-chats-list" id="recentChatsList">
+          <!-- Dynamically populated or default recent sessions -->
+        </div>
+      </div>
+
+      <!-- Bottom Profile Section -->
+      <div class="sidebar-footer">
+        <div class="user-profile">
+          <div class="user-avatar" title="Sahana C">
+            <span class="avatar-initials">SC</span>
+            <span class="status-indicator"></span>
+          </div>
+          <div class="user-info">
+            <span class="user-name">Sahana C</span>
+            <span class="user-status">Fashionista & Creator ✨</span>
+          </div>
+          <button class="lookbook-pill-btn" id="sidebarLookbookBtn" title="Saved Outfits Lookbook">
+            <i class="fa-solid fa-heart"></i>
+            <span class="lookbook-count" id="lookbookCount">0</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CHAT AREA -->
+    <main class="main-chat">
+      <!-- Top Navigation Bar -->
+      <header class="chat-topbar">
+        <div class="topbar-left">
+          <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+            <i class="fa-solid fa-bars-staggered"></i>
+          </button>
+          <div class="chat-title-group">
+            <div class="chat-title">
+              <span class="chat-name">StyleMate Stylist</span>
+              <span class="online-pill">
+                <span class="pulse-dot"></span> Active
+              </span>
+            </div>
+            <p class="chat-subtitle" id="activeChatTopic">Curating your aesthetic & wardrobe</p>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <!-- Audio toggle button -->
+          <button class="topbar-btn" id="soundToggleBtn" title="Toggle audio chimes" aria-label="Toggle sound">
+            <i class="fa-solid fa-volume-high"></i>
+          </button>
+
+          <!-- Export / Download Chat -->
+          <button class="topbar-btn export-chat-btn" id="exportChatBtn" title="Export / Download Style Dossier">
+            <i class="fa-solid fa-file-arrow-down"></i>
+            <span class="btn-text">Export Dossier</span>
+          </button>
+
+          <!-- Lookbook Modal Button -->
+          <button class="topbar-btn lookbook-trigger-btn" id="topbarLookbookBtn" title="View Saved Lookbook">
+            <i class="fa-solid fa-heart"></i>
+            <span class="btn-text">Lookbook</span>
+            <span class="badge" id="topbarLookbookBadge">0</span>
+          </button>
+
+          <!-- About Project Button -->
+          <button class="topbar-btn about-trigger-btn" id="aboutBtn" title="About StyleMate Project">
+            <i class="fa-solid fa-circle-info"></i>
+            <span class="btn-text">About</span>
+          </button>
+
+          <!-- Clear Chat Button -->
+          <button class="topbar-btn clear-chat-btn" id="clearChatBtn" title="Clear current conversation">
+            <i class="fa-solid fa-trash-can"></i>
+            <span class="btn-text">Clear</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Chat Scrollable Body -->
+      <div class="chat-body" id="chatBody">
+        
+        <!-- Welcome Screen (Visible on empty chat / new chat) -->
+        <section class="welcome-screen" id="welcomeScreen">
+          <div class="welcome-card">
+            <div class="welcome-visual-wrap">
+              <img src="assets/fashion-hero.svg" alt="StyleMate Haute Couture Fashion Visual" class="welcome-illustration">
+              <div class="floating-badge badge-top-right">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> AI Stylist
+              </div>
+              <div class="floating-badge badge-bottom-left">
+                <i class="fa-solid fa-heart"></i> Personalised Looks
+              </div>
+            </div>
+
+            <div class="welcome-content">
+              <span class="welcome-tag">✨ Couture & Everyday Elegance</span>
+              <h2 class="welcome-heading">Hey there, Fashionista! ✨</h2>
+              <p class="welcome-subtitle">Let's find your perfect style today. What would you like to explore?</p>
+            </div>
+          </div>
+
+          <!-- Quick Suggestion Cards Section -->
+          <div class="suggestions-container">
+            <div class="suggestions-header">
+              <h3 class="suggestions-title">Instant Styling Inquiries</h3>
+              <p class="suggestions-hint">Tap any card to ask StyleMate right away</p>
+            </div>
+            
+            <div class="suggestions-grid" id="suggestionsGrid">
+              <!-- 1. Suggest an Outfit -->
+              <button class="suggestion-card" data-prompt="What should I wear today? Suggest an outfit for me.">
+                <div class="card-icon-box outfit-icon">
+                  <i class="fa-solid fa-shirt"></i>
+                </div>
+                <div class="card-text">
+                  <span class="card-title">👗 Suggest an Outfit</span>
+                  <span class="card-desc">Top, bottom, shoes & curated accessories</span>
+                </div>
+                <div class="card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+              </button>
+
+              <!-- 2. Party Looks -->
+              <button class="suggestion-card" data-prompt="I need party outfit ideas! How should I style for a party?">
+                <div class="card-icon-box party-icon">
+                  <i class="fa-solid fa-champagne-glasses"></i>
+                </div>
+                <div class="card-text">
+                  <span class="card-title">🎉 Party Looks</span>
+                  <span class="card-desc">Glam, night-out & celebration styling</span>
+                </div>
+                <div class="card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+              </button>
+
+              <!-- 3. Colour Combinations -->
+              <button class="suggestion-card" data-prompt="What are some aesthetic colour combinations for clothes and why do they work?">
+                <div class="card-icon-box color-icon">
+                  <i class="fa-solid fa-palette"></i>
+                </div>
+                <div class="card-text">
+                  <span class="card-title">🎨 Colour Combinations</span>
+                  <span class="card-desc">Chic pairing formulas & palette harmony</span>
+                </div>
+                <div class="card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+              </button>
+
+              <!-- 4. Office Wear -->
+              <button class="suggestion-card" data-prompt="Give me chic office and work wear outfit suggestions.">
+                <div class="card-icon-box office-icon">
+                  <i class="fa-solid fa-briefcase"></i>
+                </div>
+                <div class="card-text">
+                  <span class="card-title">💼 Office Wear</span>
+                  <span class="card-desc">Sharp, smart-casual and elegant power looks</span>
+                </div>
+                <div class="card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+              </button>
+
+              <!-- 5. Fashion Tips -->
+              <button class="suggestion-card" data-prompt="Give me your best fashion tips on how to look elegant, style oversized clothes, and accessorize.">
+                <div class="card-icon-box tips-icon">
+                  <i class="fa-solid fa-sparkles"></i>
+                </div>
+                <div class="card-text">
+                  <span class="card-title">✨ Fashion Tips</span>
+                  <span class="card-desc">Pro stylist hacks, proportion & accessory rules</span>
+                </div>
+                <div class="card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+              </button>
+
+              <!-- 6. Budget Styling -->
+              <button class="suggestion-card" data-prompt="How can I look stylish on a budget and reuse my existing clothes?">
+                <div class="card-icon-box budget-icon">
+                  <i class="fa-solid fa-coins"></i>
+                </div>
+                <div class="card-text">
+                  <span class="card-title">💰 Budget Styling</span>
+                  <span class="card-desc">Thrifting, wardrobe rewears & luxe hacks</span>
+                </div>
+                <div class="card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Message Stream Container -->
+        <div class="messages-container" id="messagesContainer">
+          <!-- Dynamic Chat Bubbles will be injected here -->
+        </div>
+
+        <!-- Typing Indicator Bubble -->
+        <div class="typing-indicator-wrap" id="typingIndicator" style="display: none;">
+          <div class="bot-avatar-mini">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+          </div>
+          <div class="typing-bubble">
+            <span class="typing-status-text">StyleMate is curating your style</span>
+            <div class="typing-dots">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Quick Prompt Suggestion Chips (Above Input) -->
+      <div class="quick-chips-bar" id="quickChipsBar">
+        <button class="chip-btn" data-prompt="Suggest a casual outfit for college">
+          <i class="fa-solid fa-graduation-cap"></i> College Outfit
+        </button>
+        <button class="chip-btn" data-prompt="Black and White color combination styling">
+          <i class="fa-solid fa-circle-half-stroke"></i> Black + White
+        </button>
+        <button class="chip-btn" data-prompt="What should I wear for a romantic dinner date?">
+          <i class="fa-solid fa-heart"></i> Date Night
+        </button>
+        <button class="chip-btn" data-prompt="How to style oversized shirts and blazers?">
+          <i class="fa-solid fa-layer-group"></i> Oversized Styling
+        </button>
+        <button class="chip-btn" data-prompt="How to create a capsule wardrobe?">
+          <i class="fa-solid fa-box-archive"></i> Capsule Wardrobe
+        </button>
+        <button class="chip-btn" data-prompt="Pink and White outfit color combination">
+          <i class="fa-solid fa-wand-magic"></i> Pink + White
+        </button>
+      </div>
+
+      <!-- Input Footer Area -->
+      <footer class="chat-input-area">
+        <form class="chat-form" id="chatForm">
+          <div class="input-wrapper">
+            <button type="button" class="voice-btn" id="voiceBtn" title="Speak to StyleMate (Voice Input)">
+              <i class="fa-solid fa-microphone"></i>
+            </button>
+            <textarea 
+              id="chatInput" 
+              class="chat-input" 
+              placeholder="Ask me anything about fashion..." 
+              rows="1" 
+              maxlength="1000"
+              aria-label="Fashion question input"
+            ></textarea>
+            <button type="submit" class="send-btn" id="sendBtn" title="Send message" aria-label="Send message">
+              <i class="fa-solid fa-paper-plane"></i>
+            </button>
+          </div>
+        </form>
+        <div class="input-footnote">
+          StyleMate gives intelligent fashion, color & wardrobe advice. Tap any outfit's heart icon to save to your Lookbook!
+        </div>
+      </footer>
+    </main>
+
+  </div>
+
+  <!-- SAVED LOOKBOOK MODAL -->
+  <div class="modal-backdrop" id="lookbookModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title">
+          <i class="fa-solid fa-heart modal-heart-icon"></i>
+          <div>
+            <h3>Your Saved Lookbook</h3>
+            <span class="modal-subtitle">Favourite outfits and styling formulas</span>
+          </div>
+        </div>
+        <button class="modal-close-btn" id="closeLookbookBtn" aria-label="Close modal">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-body" id="lookbookList">
+        <!-- Rendered dynamically -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="clearLookbookBtn">Clear All Saved</button>
+        <button class="btn-primary" id="closeLookbookBtn2">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLEAR CHAT CONFIRMATION MODAL -->
+  <div class="modal-backdrop" id="confirmModal">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-header">
+        <div class="modal-title">
+          <i class="fa-solid fa-triangle-exclamation text-burgundy"></i>
+          <h3>Clear Conversation?</h3>
+        </div>
+        <button class="modal-close-btn" id="closeConfirmBtn" aria-label="Close modal">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to clear your current conversation? You can start a fresh session with new styling ideas anytime.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="cancelClearBtn">Cancel</button>
+        <button class="btn-danger" id="confirmClearBtn">Yes, Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABOUT PROJECT MODAL -->
+  <div class="modal-backdrop" id="aboutModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title">
+          <i class="fa-solid fa-wand-magic-sparkles text-burgundy"></i>
+          <div>
+            <h3>About StyleMate</h3>
+            <span class="modal-subtitle">AI-Style Personal Fashion Assistant</span>
+          </div>
+        </div>
+        <button class="modal-close-btn" id="closeAboutBtn" aria-label="Close modal">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="about-card-badge">
+          <div class="about-author-wrap">
+            <span class="about-tag">Project Overview</span>
+            <h4 class="about-author-name">Designed & Developed by Sahana C</h4>
+            <p class="about-author-desc">An interactive fashion-tech assistant providing curated outfit recommendations, color theory swatches, occasion styling, and pro fashion tips.</p>
+          </div>
+        </div>
+
+        <div class="about-grid">
+          <div class="about-feature-box">
+            <span class="feat-icon"><i class="fa-solid fa-code"></i></span>
+            <div>
+              <strong>Tech Stack</strong>
+              <p>HTML5, Modern CSS3, Vanilla JavaScript (ES6+), Font Awesome 6, Google Fonts</p>
+            </div>
+          </div>
+
+          <div class="about-feature-box">
+            <span class="feat-icon"><i class="fa-solid fa-brain"></i></span>
+            <div>
+              <strong>Styling Engine</strong>
+              <p>Keyword-based natural language parser, synonym resolution & local fashion datasets</p>
+            </div>
+          </div>
+
+          <div class="about-feature-box">
+            <span class="feat-icon"><i class="fa-solid fa-palette"></i></span>
+            <div>
+              <strong>Haute Couture UI</strong>
+              <p>Blush pink & burgundy palette, Playfair Display typography, responsive drawer</p>
+            </div>
+          </div>
+
+          <div class="about-feature-box">
+            <span class="feat-icon"><i class="fa-solid fa-heart"></i></span>
+            <div>
+              <strong>Interactive Features</strong>
+              <p>Saved Lookbook (localStorage), speech-to-text voice input, Web Audio API chimes, style export</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-primary" id="closeAboutBtn2">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast-notification" id="toast">
+    <span class="toast-icon"><i class="fa-solid fa-check"></i></span>
+    <span class="toast-message" id="toastMessage">Copied to clipboard!</span>
+  </div>
+
+  <!-- Application Logic -->
+  <script src="script.js"></script>
+</body>
+</html>
